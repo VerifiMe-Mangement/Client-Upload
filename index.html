@@ -3,80 +3,259 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Verifime — Client Upload</title>
+  <title>Verifime — Client Onboarding</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://s.pageclip.co/v1/pageclip.css" media="screen">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="icon" type="image/png" href="Standard-VerifiMe-Logo-DarkBG-Icon.png">
   <style>
-    body { font-family: 'DM Sans', sans-serif; color: #111; font-size: 17px; }
-    [class*="text-gray"], .text-gray-600, .text-gray-500, .text-gray-400, .text-gray-700, .text-gray-800, .text-gray-900 {
-      color: #111 !important;
-    }
-
-    input {
+    body { font-family: 'DM Sans', sans-serif; color: #111; font-size: 16px; }
+ 
+    input[type="text"], input[type="email"], input[type="url"], select, textarea {
       width: 100%;
-      padding: 10px 10px 10px 10px !important;
+      padding: 10px 12px;
       background: #f9fafb;
       border: 2px solid #e5e7eb;
       border-radius: 8px;
       font-family: 'DM Sans', sans-serif;
-      font-size: 22px;
+      font-size: 16px;
       color: #1F2937;
       outline: none;
       transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
-      height: 50px;
     }
-
-    input::placeholder { color: #9ca3af; }
-    input:hover { border-color: #a5b4fc; }
-    input:focus {
+    input[type="text"]::placeholder,
+    input[type="email"]::placeholder,
+    input[type="url"]::placeholder,
+    textarea::placeholder { color: #9ca3af; }
+    input:hover, select:hover, textarea:hover { border-color: #a5b4fc; }
+    input:focus, select:focus, textarea:focus {
       border-color: #4f46e5;
       box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
       background: #fff;
     }
-
-    /* Style Pageclip's submit button to match our design */
-    .pageclip-form__submit {
+ 
+    .section-title {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #4f46e5;
+      border-bottom: 2px solid #e0e0f7;
+      padding-bottom: 6px;
+      margin-bottom: 20px;
+    }
+ 
+    .label {
+      display: block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #6b7280;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 6px;
+    }
+ 
+    .hint {
+      font-size: 0.8rem;
+      color: #6b7280;
+      margin-top: 4px;
+      line-height: 1.4;
+    }
+ 
+    .user-row {
+      background: #fff;
+      border: 2px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      position: relative;
+    }
+    .user-row:hover { border-color: #a5b4fc; }
+ 
+    .toggle-group {
+      display: flex;
+      gap: 10px;
+    }
+    .toggle-btn {
+      flex: 1;
+      padding: 9px;
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+      background: #f9fafb;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-align: center;
+      color: #6b7280;
+    }
+    .toggle-btn.active {
+      background: #4f46e5;
+      border-color: #4f46e5;
+      color: #fff;
+    }
+    .toggle-btn:hover:not(.active) {
+      border-color: #a5b4fc;
+      color: #4f46e5;
+    }
+ 
+    .checkbox-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+    .checkbox-row input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      min-width: 18px;
+      margin-top: 2px;
+      accent-color: #4f46e5;
+      cursor: pointer;
+      padding: 0;
+      border: none;
+      box-shadow: none;
+      background: none;
+    }
+    .checkbox-row label {
+      font-size: 0.92rem;
+      color: #374151;
+      cursor: pointer;
+      line-height: 1.4;
+    }
+ 
+    .radio-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .radio-option {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      cursor: pointer;
+    }
+    .radio-option input[type="radio"] {
+      width: 17px;
+      height: 17px;
+      accent-color: #4f46e5;
+      cursor: pointer;
+      padding: 0;
+      border: none;
+      background: none;
+      min-width: 17px;
+    }
+    .radio-option label {
+      font-size: 0.92rem;
+      color: #374151;
+      cursor: pointer;
+    }
+ 
+    .submit-btn {
       width: 100%;
       margin-top: 0.5rem;
-      padding: 0.75rem 1.5rem !important;
-      background-color: #4f46e5 !important;
-      color: #fff !important;
-      border: none !important;
-      border-radius: 0.5rem !important;
-      font-family: 'DM Sans', sans-serif !important;
-      font-size: 1rem !important;
-      font-weight: 500 !important;
+      padding: 0.85rem 1.5rem;
+      background-color: #4f46e5;
+      color: #fff;
+      border: none;
+      border-radius: 0.5rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
       cursor: pointer;
-      display: flex !important;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
       transition: background-color 0.2s;
     }
-    .pageclip-form__submit:hover { background-color: #4338ca !important; }
-    .pageclip-form__submit[disabled] { opacity: 0.7; }
-
+    .submit-btn:hover { background-color: #4338ca; }
+ 
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: #eef2ff;
+      color: #4f46e5;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 999px;
+      border: 1px solid #c7d2fe;
+    }
+ 
+    .info-box {
+      background: #fff;
+      border: 1.5px solid #e0e0f7;
+      border-radius: 10px;
+      padding: 14px 16px;
+      font-size: 0.88rem;
+      color: #374151;
+      line-height: 1.6;
+    }
+    .info-box strong { color: #111; }
+ 
     @keyframes rise {
       from { opacity: 0; transform: translateY(20px); }
       to   { opacity: 1; transform: translateY(0); }
     }
     .card-animate { animation: rise 0.5s cubic-bezier(0.22,1,0.36,1) both; }
+ 
+    .remove-user {
+      position: absolute;
+      top: 10px;
+      right: 12px;
+      background: none;
+      border: none;
+      color: #9ca3af;
+      font-size: 1.1rem;
+      cursor: pointer;
+      line-height: 1;
+      padding: 2px 6px;
+      border-radius: 4px;
+      transition: color 0.15s, background 0.15s;
+    }
+    .remove-user:hover { color: #ef4444; background: #fef2f2; }
+ 
+    .file-input-wrapper {
+      position: relative;
+    }
+    .file-input-wrapper input[type="file"] {
+      width: 100%;
+      padding: 10px 12px;
+      background: #f9fafb;
+      border: 2px dashed #e5e7eb;
+      border-radius: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      color: #6b7280;
+      cursor: pointer;
+      height: auto;
+    }
+    .file-input-wrapper input[type="file"]:hover { border-color: #a5b4fc; }
+ 
+    #sub-entity-options { display: none; }
+ 
+    .compliance-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #4f46e5;
+      background: #eef2ff;
+      border: 1px solid #c7d2fe;
+      border-radius: 999px;
+      padding: 2px 8px;
+    }
   </style>
 </head>
 <body class="min-h-screen py-12 px-4" style="background: linear-gradient(to bottom, #4f46e5 33%, #ffffff 33%);">
-
+ 
   <div class="max-w-3xl mx-auto">
-
+ 
     <!-- Header -->
     <div class="text-center mb-8">
       <img src="Standard-VerifiMe-Logo-Normal.png" alt="Verifime Logo" class="mx-auto mb-4 w-56 h-auto" />
-      <h1 class="text-6xl font-bold text-white mb-3">Exhibition Draw</h1>
-      <p class="text-2xl text-white">Win a free pass to AML in a Day valued at $2,000 + GST to help your practice build a compliant AML/CTF program.</p>
-
-      <!-- 3 feature badges -->
+      <h1 class="text-5xl font-bold text-white mb-3">Client Onboarding</h1>
+      <p class="text-xl text-white opacity-90">Complete the form below to set up your VerifiMe client management portal.</p>
       <div class="flex flex-wrap justify-center gap-3 mt-6">
         <div class="flex items-center gap-2 bg-white rounded-full px-5 py-2 shadow-sm">
           <svg class="w-5 h-5 text-indigo-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
@@ -92,49 +271,158 @@
         </div>
       </div>
     </div>
-
-    <!-- Info sections -->
-    <div class="grid grid-cols-1 gap-4 mb-6 card-animate"></div>
-
+ 
+    <!-- Main Form -->
     <div class="rounded-lg shadow-lg p-8 mb-6 card-animate" style="background: #f1f0ff;">
-
-      <div class="text-center mb-6">
-        <span class="text-base font-semibold" style="color: #4f46e5;">Exhibition 2026</span>
-      </div>
-
-      <!-- Prize draw callout -->
-      <div class="bg-white border border-indigo-200 rounded-lg px-5 py-4 mb-6">
-        <p class="text-black text-base leading-relaxed"><span style="font-size: 3rem; line-height: 1; vertical-align: middle; margin-right: 0.3rem;">🎟️</span> Enter for your chance to win a free spot at this hands-on AML/CTF compliance workshop facilitated by Holley Nethercote Lawyers. Taking place on <strong>Monday, 30 March 2026, 8:30am–5:00pm at BlackBay Lawyers, Sydney</strong></p>
-        <p class="text-black text-base leading-relaxed mt-3">The workshop provides access to a comprehensive suite of compliance resources, including <em>registers, checklists, procedures, and a specialised AML/CTF Program template.</em></p>
-        <p class="text-black text-base leading-relaxed mt-1">Topics covered include governance structure, ML/TF risk assessment, Customer Due Diligence, reporting obligations, and independent evaluations, plus a one-hour follow-up webinar with the latest AUSTRAC updates. Places are strictly limited to 25 practice registrations. Register your details below for your chance to win.</p>
-      </div>
-
-      <!-- Form -->
-      <form action="https://send.pageclip.co/Sbi4PRn2OMliMUbh9guZte8eWjorIavp/draw-form" method="post" id="reg-form">
-        <div class="space-y-5">
-
-          <div>
-            <label for="name" class="block text-xs font-semibold text-gray-500 uppercase tracking-widest mb-2">Full Name</label>
-            <input id="name" name="name" type="text" placeholder="Jane Smith" required autocomplete="name" />
-          </div>
-
-          <div>
-            <label for="company" class="block text-xs font-semibold text-gray-500 uppercase tracking-widest mb-2">Company</label>
-            <input id="company" name="company" type="text" placeholder="Acme Ltd" required autocomplete="organization" />
-          </div>
-
-          <div>
-            <label for="email" class="block text-xs font-semibold text-gray-500 uppercase tracking-widest mb-2">Email Address</label>
-            <input id="email" name="email" type="email" placeholder="jane@acme.com" required autocomplete="email" />
-          </div>
-
-          <button type="submit" class="pageclip-form__submit">
-            <span>Submit Registration</span>
+ 
+      <form id="reg-form" action="https://send.pageclip.co/Sbi4PRn2OMliMUbh9guZte8eWjorIavp/draw-form" method="post">
+ 
+        <!-- ── USERS + ACCESS ── -->
+        <div class="mb-8">
+          <div class="section-title">Users + Access</div>
+ 
+          <p class="hint mb-5">Add all platform admin users below. Mark the <strong>Compliance Officer</strong> using the checkbox — only one user should hold this role. Users marked for <strong>Notifications</strong> will receive system alerts (e.g. verification updates, expiry reminders). The Compliance Officer is responsible for regulatory obligations and may or may not also receive notifications.</p>
+ 
+          <div id="users-container"></div>
+ 
+          <button type="button" id="add-user-btn" class="mt-2 flex items-center gap-2 text-indigo-600 font-semibold text-sm hover:text-indigo-800 transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
+            Add Another User
           </button>
-
         </div>
+ 
+        <!-- ── SUB-ENTITIES ── -->
+        <div class="mb-8">
+          <div class="section-title">Sub-Entities</div>
+          <p class="hint mb-4">A sub-entity is a separate version of the VerifiMe platform with its own configuration — useful if your business has multiple product offerings or functions (e.g. lending, recruitment, property management) that require different verification flows or settings.</p>
+ 
+          <label class="label">Does your organisation require sub-entities?</label>
+          <div class="toggle-group mb-4" id="sub-entity-toggle">
+            <button type="button" class="toggle-btn" data-val="no" onclick="toggleSubEntity('no')">No</button>
+            <button type="button" class="toggle-btn" data-val="yes" onclick="toggleSubEntity('yes')">Yes</button>
+          </div>
+          <input type="hidden" name="sub_entities_required" id="sub-entity-value" value="no" />
+ 
+          <div id="sub-entity-options" class="space-y-3">
+            <label class="label">Sub-entity names / purposes</label>
+            <p class="hint mb-2">Select all that apply, or describe your own below.</p>
+            <div class="grid grid-cols-2 gap-2">
+              <div class="checkbox-row"><input type="checkbox" name="sub_entity_type[]" value="Lending" id="se-lending"><label for="se-lending">Lending</label></div>
+              <div class="checkbox-row"><input type="checkbox" name="sub_entity_type[]" value="Recruitment" id="se-recruitment"><label for="se-recruitment">Recruitment</label></div>
+              <div class="checkbox-row"><input type="checkbox" name="sub_entity_type[]" value="Property Management" id="se-property"><label for="se-property">Property Management</label></div>
+              <div class="checkbox-row"><input type="checkbox" name="sub_entity_type[]" value="Insurance" id="se-insurance"><label for="se-insurance">Insurance</label></div>
+              <div class="checkbox-row"><input type="checkbox" name="sub_entity_type[]" value="Conveyancing" id="se-conveyancing"><label for="se-conveyancing">Conveyancing</label></div>
+              <div class="checkbox-row"><input type="checkbox" name="sub_entity_type[]" value="Other" id="se-other"><label for="se-other">Other</label></div>
+            </div>
+            <div class="mt-3">
+              <label class="label">Additional sub-entity details</label>
+              <textarea name="sub_entity_notes" rows="2" placeholder="Describe any additional sub-entities or configurations..." style="width:100%;padding:10px 12px;background:#f9fafb;border:2px solid #e5e7eb;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:15px;color:#1F2937;outline:none;resize:vertical;"></textarea>
+            </div>
+          </div>
+        </div>
+ 
+        <!-- ── COMPLIANCE DOCUMENTATION ── -->
+        <div class="mb-8">
+          <div class="section-title">Compliance Documentation</div>
+          <div>
+            <label class="label">AML/CTF Program <span class="badge">If not yet received</span></label>
+            <p class="hint mb-2">Upload your AML/CTF Program document if it hasn't already been provided to the VerifiMe team.</p>
+            <div class="file-input-wrapper">
+              <input type="file" name="aml_ctf_program" accept=".pdf,.doc,.docx" />
+            </div>
+          </div>
+        </div>
+ 
+        <!-- ── BRANDING + CONFIGURATION ── -->
+        <div class="mb-8">
+          <div class="section-title">Branding + Configuration</div>
+          <div class="space-y-5">
+ 
+            <div>
+              <label class="label">Company Logo <span class="badge">PNG or SVG</span></label>
+              <div class="file-input-wrapper mb-3">
+                <input type="file" name="company_logo" accept=".png,.svg" id="logo-upload" onchange="showLogoConsent()" />
+              </div>
+              <div id="logo-consent" style="display:none;" class="checkbox-row mt-2 bg-white border border-indigo-200 rounded-lg px-4 py-3">
+                <input type="checkbox" name="logo_consent" id="logo-consent-check" value="yes">
+                <label for="logo-consent-check">I consent to VerifiMe using this logo on their website and marketing materials where appropriate.</label>
+              </div>
+            </div>
+ 
+            <div>
+              <label class="label">Company Webpage URL <span class="badge">If applicable</span></label>
+              <input type="url" name="company_url" id="company_url" placeholder="https://yourcompany.com.au" />
+              <div id="redirect-question" style="display:none;" class="mt-3">
+                <label class="label">Redirect customers to this URL after completing verification?</label>
+                <div class="toggle-group" id="redirect-toggle">
+                  <button type="button" class="toggle-btn" data-val="no" onclick="toggleRedirect('no')">No</button>
+                  <button type="button" class="toggle-btn" data-val="yes" onclick="toggleRedirect('yes')">Yes</button>
+                </div>
+                <input type="hidden" name="redirect_after_verification" id="redirect-value" value="no" />
+              </div>
+            </div>
+ 
+            <div>
+              <label class="label">Preferred Document Flow</label>
+              <div class="radio-row">
+                <label class="radio-option"><input type="radio" name="doc_flow" value="1-doc" /> <label>1-doc</label></label>
+                <label class="radio-option"><input type="radio" name="doc_flow" value="2-doc" /> <label>2-doc</label></label>
+              </div>
+            </div>
+ 
+          </div>
+        </div>
+ 
+        <!-- ── INTEGRATIONS ── -->
+        <div class="mb-8">
+          <div class="section-title">Integrations</div>
+          <div class="space-y-5">
+ 
+            <div>
+              <label class="label">API Integration Required?</label>
+              <div class="toggle-group" id="api-toggle">
+                <button type="button" class="toggle-btn" data-val="no" onclick="toggleApi('no')">No</button>
+                <button type="button" class="toggle-btn" data-val="yes" onclick="toggleApi('yes')">Yes</button>
+              </div>
+              <input type="hidden" name="api_integration" id="api-value" value="no" />
+              <div id="api-note" style="display:none;" class="info-box mt-3 text-sm">
+                ℹ️ Client will be routed into the staging environment setup prior to training.
+              </div>
+            </div>
+ 
+            <div>
+              <label class="label">Xero Integration Required?</label>
+              <div class="toggle-group" id="xero-toggle">
+                <button type="button" class="toggle-btn" data-val="no" onclick="toggleXero('no')">No</button>
+                <button type="button" class="toggle-btn" data-val="yes" onclick="toggleXero('yes')">Yes</button>
+              </div>
+              <input type="hidden" name="xero_integration" id="xero-value" value="no" />
+            </div>
+ 
+          </div>
+        </div>
+ 
+        <!-- ── AUTOMATED USER INVITATIONS ── -->
+        <div class="mb-8">
+          <div class="section-title">Automated User Invitations</div>
+          <div class="info-box mb-4">
+            <p>📧 Once you submit this form, VerifiMe will automatically send each listed user an email inviting them to complete their identity verification via the VerifiMe portal — including instructions to upload their ID documents and complete a face check.</p>
+          </div>
+          <div class="checkbox-row">
+            <input type="checkbox" name="send_auto_invites" id="auto-invites" value="yes" checked>
+            <label for="auto-invites">Send automated onboarding emails to all listed users upon submission.</label>
+          </div>
+        </div>
+ 
+        <!-- Hidden structured output field -->
+        <input type="hidden" name="_form_output_format" value="cell" />
+        <input type="hidden" name="_form_version" value="2.0" />
+        <input type="hidden" name="_submitted_at" id="submitted-at" value="" />
+ 
+        <button type="submit" class="submit-btn">Submit Onboarding Form</button>
+ 
       </form>
-
+ 
       <!-- Success state -->
       <div id="success" style="display:none" class="text-center py-6">
         <div class="w-14 h-14 bg-green-50 border border-green-200 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -142,47 +430,151 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
           </svg>
         </div>
-        <h2 class="text-2xl font-bold text-gray-800 mb-2">You're registered!</h2>
-        <p class="text-gray-600 text-sm leading-relaxed">Thanks for stopping by. You've been entered into the draw for a free pass to <strong>AML in a Day</strong>. A member of the Verifime team will be in touch shortly.</p>
-        <button id="back-btn" type="button" class="mt-4 px-4 py-2 border border-indigo-300 text-indigo-700 rounded-lg hover:bg-indigo-50 transition">Submit another registration</button>
+        <h2 class="text-2xl font-bold text-gray-800 mb-2">Onboarding submitted!</h2>
+        <p class="text-gray-600 text-sm leading-relaxed max-w-sm mx-auto">Thanks for completing the form. The VerifiMe team will review your details and be in touch shortly. Listed users will receive their onboarding email invitations automatically.</p>
+        <button id="back-btn" type="button" class="mt-5 px-4 py-2 border border-indigo-300 text-indigo-700 rounded-lg hover:bg-indigo-50 transition text-sm">Submit another response</button>
       </div>
-
+ 
     </div>
-
-    <!-- Footer note -->
+ 
     <div class="text-center text-sm text-gray-500 flex items-center justify-center gap-2">
       <svg class="w-4 h-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
       </svg>
-      Your details are kept private and used only to follow up after this event.
+      Your details are kept private and used only to administer your VerifiMe account.
     </div>
-
+ 
   </div>
-
-  <script src="https://s.pageclip.co/v1/pageclip.js" charset="utf-8"></script>
-  <script>
-    window.onload = function () {
-      var form      = document.getElementById('reg-form');
-      var successEl = document.getElementById('success');
-      var backBtn   = document.getElementById('back-btn');
-
-      Pageclip.form(form, {
-        onResponse: function (error, response) {
-          if (!error) {
-            form.style.display      = 'none';
-            successEl.style.display = 'block';
-          }
-          return false;
+ 
+<script src="https://s.pageclip.co/v1/pageclip.js" charset="utf-8"></script>
+<script>
+  let userCount = 0;
+  let complianceOfficerIndex = null;
+ 
+  function addUser(isFirst) {
+    userCount++;
+    const idx = userCount;
+    const container = document.getElementById('users-container');
+    const div = document.createElement('div');
+    div.className = 'user-row';
+    div.id = 'user-row-' + idx;
+    div.innerHTML = `
+      ${!isFirst ? `<button type="button" class="remove-user" onclick="removeUser(${idx})" title="Remove user">✕</button>` : ''}
+      <div class="grid grid-cols-1 gap-3 mb-3" style="grid-template-columns: 1fr 1fr;">
+        <div>
+          <label class="label">Full Name</label>
+          <input type="text" name="user_name_${idx}" placeholder="Jane Smith" required />
+        </div>
+        <div>
+          <label class="label">Work Email</label>
+          <input type="email" name="user_email_${idx}" placeholder="jane@company.com" required />
+        </div>
+      </div>
+      <div class="flex flex-wrap gap-4 mt-1">
+        <div class="checkbox-row">
+          <input type="checkbox" name="user_compliance_officer_${idx}" id="co-${idx}" value="yes" onchange="setComplianceOfficer(${idx}, this)">
+          <label for="co-${idx}"><span class="compliance-badge">✓ Compliance Officer</span></label>
+        </div>
+        <div class="checkbox-row">
+          <input type="checkbox" name="user_notifications_${idx}" id="notif-${idx}" value="yes">
+          <label for="notif-${idx}">Receives Notifications</label>
+        </div>
+      </div>
+    `;
+    container.appendChild(div);
+  }
+ 
+  function removeUser(idx) {
+    const row = document.getElementById('user-row-' + idx);
+    if (row) row.remove();
+    if (complianceOfficerIndex === idx) complianceOfficerIndex = null;
+  }
+ 
+  function setComplianceOfficer(idx, checkbox) {
+    if (checkbox.checked) {
+      // Uncheck any other compliance officer
+      if (complianceOfficerIndex && complianceOfficerIndex !== idx) {
+        const prev = document.getElementById('co-' + complianceOfficerIndex);
+        if (prev) prev.checked = false;
+      }
+      complianceOfficerIndex = idx;
+    } else {
+      if (complianceOfficerIndex === idx) complianceOfficerIndex = null;
+    }
+  }
+ 
+  document.getElementById('add-user-btn').addEventListener('click', () => addUser(false));
+ 
+  // Init with one user
+  addUser(true);
+ 
+  // Sub-entity toggle
+  function toggleSubEntity(val) {
+    document.getElementById('sub-entity-value').value = val;
+    document.querySelectorAll('#sub-entity-toggle .toggle-btn').forEach(b => b.classList.toggle('active', b.dataset.val === val));
+    document.getElementById('sub-entity-options').style.display = val === 'yes' ? 'block' : 'none';
+  }
+  toggleSubEntity('no');
+ 
+  // Redirect toggle
+  function toggleRedirect(val) {
+    document.getElementById('redirect-value').value = val;
+    document.querySelectorAll('#redirect-toggle .toggle-btn').forEach(b => b.classList.toggle('active', b.dataset.val === val));
+  }
+ 
+  // Show redirect question when URL is entered
+  document.getElementById('company_url').addEventListener('input', function() {
+    document.getElementById('redirect-question').style.display = this.value.trim() ? 'block' : 'none';
+  });
+ 
+  // API toggle
+  function toggleApi(val) {
+    document.getElementById('api-value').value = val;
+    document.querySelectorAll('#api-toggle .toggle-btn').forEach(b => b.classList.toggle('active', b.dataset.val === val));
+    document.getElementById('api-note').style.display = val === 'yes' ? 'block' : 'none';
+  }
+  toggleApi('no');
+ 
+  // Xero toggle
+  function toggleXero(val) {
+    document.getElementById('xero-value').value = val;
+    document.querySelectorAll('#xero-toggle .toggle-btn').forEach(b => b.classList.toggle('active', b.dataset.val === val));
+  }
+  toggleXero('no');
+ 
+  // Logo consent
+  function showLogoConsent() {
+    const fileInput = document.getElementById('logo-upload');
+    document.getElementById('logo-consent').style.display = fileInput.files.length > 0 ? 'flex' : 'none';
+  }
+ 
+  // Pageclip form submission
+  window.onload = function () {
+    const form = document.getElementById('reg-form');
+    const successEl = document.getElementById('success');
+    const backBtn = document.getElementById('back-btn');
+ 
+    document.getElementById('submitted-at').value = new Date().toISOString();
+ 
+    Pageclip.form(form, {
+      onResponse: function (error, response) {
+        if (!error) {
+          form.style.display = 'none';
+          successEl.style.display = 'block';
         }
-      });
-
-      backBtn.addEventListener('click', function () {
-        form.reset();
-        form.style.display      = 'block';
-        successEl.style.display = 'none';
-      });
-    };
-  </script>
-
+        return false;
+      }
+    });
+ 
+    backBtn.addEventListener('click', function () {
+      form.reset();
+      form.style.display = 'block';
+      successEl.style.display = 'none';
+      toggleSubEntity('no');
+      toggleApi('no');
+      toggleXero('no');
+    });
+  };
+</script>
 </body>
 </html>
