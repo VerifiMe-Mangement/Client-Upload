@@ -10,7 +10,7 @@
   <link rel="icon" type="image/png" href="Standard-VerifiMe-Logo-DarkBG-Icon.png">
   <style>
     body { font-family: 'DM Sans', sans-serif; color: #111; font-size: 16px; }
- 
+
     input[type="text"], input[type="email"], input[type="url"], select, textarea {
       width: 100%;
       padding: 10px 12px;
@@ -33,7 +33,7 @@
       box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
       background: #fff;
     }
- 
+
     .section-title {
       font-size: 0.65rem;
       font-weight: 700;
@@ -44,7 +44,7 @@
       padding-bottom: 6px;
       margin-bottom: 20px;
     }
- 
+
     .label {
       display: block;
       font-size: 0.72rem;
@@ -54,14 +54,14 @@
       letter-spacing: 0.08em;
       margin-bottom: 6px;
     }
- 
+
     .hint {
       font-size: 0.8rem;
       color: #6b7280;
       margin-top: 4px;
       line-height: 1.4;
     }
- 
+
     .user-row {
       background: #fff;
       border: 2px solid #e5e7eb;
@@ -71,7 +71,7 @@
       position: relative;
     }
     .user-row:hover { border-color: #a5b4fc; }
- 
+
     .toggle-group {
       display: flex;
       gap: 10px;
@@ -99,7 +99,7 @@
       border-color: #a5b4fc;
       color: #4f46e5;
     }
- 
+
     .checkbox-row {
       display: flex;
       align-items: flex-start;
@@ -124,7 +124,7 @@
       cursor: pointer;
       line-height: 1.4;
     }
- 
+
     .radio-row {
       display: flex;
       gap: 12px;
@@ -151,7 +151,7 @@
       color: #374151;
       cursor: pointer;
     }
- 
+
     .submit-btn {
       width: 100%;
       margin-top: 0.5rem;
@@ -167,7 +167,7 @@
       transition: background-color 0.2s;
     }
     .submit-btn:hover { background-color: #4338ca; }
- 
+
     .badge {
       display: inline-flex;
       align-items: center;
@@ -180,7 +180,7 @@
       border-radius: 999px;
       border: 1px solid #c7d2fe;
     }
- 
+
     .info-box {
       background: #fff;
       border: 1.5px solid #e0e0f7;
@@ -191,13 +191,13 @@
       line-height: 1.6;
     }
     .info-box strong { color: #111; }
- 
+
     @keyframes rise {
       from { opacity: 0; transform: translateY(20px); }
       to   { opacity: 1; transform: translateY(0); }
     }
     .card-animate { animation: rise 0.5s cubic-bezier(0.22,1,0.36,1) both; }
- 
+
     .remove-user {
       position: absolute;
       top: 10px;
@@ -213,13 +213,11 @@
       transition: color 0.15s, background 0.15s;
     }
     .remove-user:hover { color: #ef4444; background: #fef2f2; }
- 
-    .file-input-wrapper {
+
+    .file-upload-area {
       position: relative;
-    }
-    .file-input-wrapper input[type="file"] {
       width: 100%;
-      padding: 10px 12px;
+      padding: 14px 16px;
       background: #f9fafb;
       border: 2px dashed #e5e7eb;
       border-radius: 8px;
@@ -227,12 +225,38 @@
       font-size: 14px;
       color: #6b7280;
       cursor: pointer;
-      height: auto;
+      transition: border-color 0.2s, background 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
-    .file-input-wrapper input[type="file"]:hover { border-color: #a5b4fc; }
- 
+    .file-upload-area:hover { border-color: #a5b4fc; background: #f5f3ff; }
+    .file-upload-area input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      border: none;
+      background: none;
+      box-shadow: none;
+    }
+    .upload-status {
+      font-size: 0.8rem;
+      margin-top: 5px;
+      min-height: 18px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .upload-status.uploading { color: #6b7280; }
+    .upload-status.done { color: #16a34a; }
+    .upload-status.error { color: #dc2626; }
+
     #sub-entity-options { display: none; }
- 
+
     .compliance-badge {
       display: inline-flex;
       align-items: center;
@@ -248,9 +272,9 @@
   </style>
 </head>
 <body class="min-h-screen py-12 px-4" style="background: linear-gradient(to bottom, #4f46e5 33%, #ffffff 33%);">
- 
+
   <div class="max-w-3xl mx-auto">
- 
+
     <!-- Header -->
     <div class="text-center mb-8">
       <img src="Standard-VerifiMe-Logo-Normal.png" alt="Verifime Logo" class="mx-auto mb-4 w-56 h-auto" />
@@ -271,38 +295,59 @@
         </div>
       </div>
     </div>
- 
+
+    <!-- Onboarding Instructions -->
+    <div class="rounded-lg shadow-lg p-7 mb-6 card-animate" style="background: #f1f0ff;">
+      <div class="section-title">Before You Begin</div>
+      <div class="info-box mb-4">
+        <p class="mb-2">👋 <strong>Thanks for getting in touch.</strong> We're setting up your client management portal and need you to step through the process below so we can connect you.</p>
+        <p class="mb-3">To onboard, please have one of the following documents ready:</p>
+        <ul class="list-disc list-inside space-y-1 mb-3 text-sm">
+          <li>Front and back of a current Australian driver's licence (or foreign equivalent)</li>
+          <li>Passport</li>
+        </ul>
+        <p class="font-semibold text-indigo-700 mb-2">Steps to complete:</p>
+        <ol class="list-decimal list-inside space-y-2 text-sm">
+          <li>Click the <strong>VerifiMe Customer Portal</strong> link you received and enter your <em>work email address</em> (not personal).</li>
+          <li>Open the email from VerifiMe and click <strong>"Verify Email"</strong>.</li>
+          <li>Enter your name, date of birth, and address, then upload your identity document and complete a face check.</li>
+          <li>Submit and share your verification status. Then, as admin, secure your account by adding an <strong>authenticator or passkey</strong> — this is required to connect to the management portal.</li>
+        </ol>
+        <p class="mt-3 text-sm text-indigo-700 font-medium">⏱ This process typically takes about 5 minutes. Let us know if you have any questions.</p>
+      </div>
+    </div>
+
     <!-- Main Form -->
     <div class="rounded-lg shadow-lg p-8 mb-6 card-animate" style="background: #f1f0ff;">
- 
+
       <form id="reg-form" action="https://send.pageclip.co/Sbi4PRn2OMliMUbh9guZte8eWjorIavp/draw-form" method="post">
- 
+
         <!-- ── USERS + ACCESS ── -->
         <div class="mb-8">
           <div class="section-title">Users + Access</div>
- 
+
           <p class="hint mb-5">Add all platform admin users below. Mark the <strong>Compliance Officer</strong> using the checkbox — only one user should hold this role. Users marked for <strong>Notifications</strong> will receive system alerts (e.g. verification updates, expiry reminders). The Compliance Officer is responsible for regulatory obligations and may or may not also receive notifications.</p>
- 
+
           <div id="users-container"></div>
- 
+
           <button type="button" id="add-user-btn" class="mt-2 flex items-center gap-2 text-indigo-600 font-semibold text-sm hover:text-indigo-800 transition">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
             Add Another User
           </button>
         </div>
- 
+
         <!-- ── SUB-ENTITIES ── -->
         <div class="mb-8">
           <div class="section-title">Sub-Entities</div>
           <p class="hint mb-4">A sub-entity is a separate version of the VerifiMe platform with its own configuration — useful if your business has multiple product offerings or functions (e.g. lending, recruitment, property management) that require different verification flows or settings.</p>
- 
+
           <label class="label">Does your organisation require sub-entities?</label>
           <div class="toggle-group mb-4" id="sub-entity-toggle">
             <button type="button" class="toggle-btn" data-val="no" onclick="toggleSubEntity('no')">No</button>
             <button type="button" class="toggle-btn" data-val="yes" onclick="toggleSubEntity('yes')">Yes</button>
           </div>
           <input type="hidden" name="sub_entities_required" id="sub-entity-value" value="no" />
- 
+
           <div id="sub-entity-options" class="space-y-3">
             <label class="label">Sub-entity names / purposes</label>
             <p class="hint mb-2">Select all that apply, or describe your own below.</p>
@@ -320,35 +365,43 @@
             </div>
           </div>
         </div>
- 
+
         <!-- ── COMPLIANCE DOCUMENTATION ── -->
         <div class="mb-8">
           <div class="section-title">Compliance Documentation</div>
           <div>
             <label class="label">AML/CTF Program <span class="badge">If not yet received</span></label>
             <p class="hint mb-2">Upload your AML/CTF Program document if it hasn't already been provided to the VerifiMe team.</p>
-            <div class="file-input-wrapper">
-              <input type="file" name="aml_ctf_program" accept=".pdf,.doc,.docx" />
+            <div class="file-upload-area">
+              <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+              <span id="aml-upload-label">Click to upload PDF or Word document</span>
+              <input type="file" accept=".pdf,.doc,.docx" onchange="uploadToCloudinary(this, 'aml_ctf_program_url', 'aml-status', 'aml-upload-label')" />
             </div>
+            <div class="upload-status" id="aml-status"></div>
+            <input type="hidden" name="aml_ctf_program_url" id="aml_ctf_program_url" />
           </div>
         </div>
- 
+
         <!-- ── BRANDING + CONFIGURATION ── -->
         <div class="mb-8">
           <div class="section-title">Branding + Configuration</div>
           <div class="space-y-5">
- 
+
             <div>
               <label class="label">Company Logo <span class="badge">PNG or SVG</span></label>
-              <div class="file-input-wrapper mb-3">
-                <input type="file" name="company_logo" accept=".png,.svg" id="logo-upload" onchange="showLogoConsent()" />
+              <div class="file-upload-area mb-3">
+                <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+                <span id="logo-upload-label">Click to upload PNG or SVG</span>
+                <input type="file" accept=".png,.svg,.jpg,.jpeg" onchange="uploadToCloudinary(this, 'company_logo_url', 'logo-status', 'logo-upload-label'); showLogoConsent(this)" />
               </div>
+              <div class="upload-status" id="logo-status"></div>
+              <input type="hidden" name="company_logo_url" id="company_logo_url" />
               <div id="logo-consent" style="display:none;" class="checkbox-row mt-2 bg-white border border-indigo-200 rounded-lg px-4 py-3">
                 <input type="checkbox" name="logo_consent" id="logo-consent-check" value="yes">
                 <label for="logo-consent-check">I consent to VerifiMe using this logo on their website and marketing materials where appropriate.</label>
               </div>
             </div>
- 
+
             <div>
               <label class="label">Company Webpage URL <span class="badge">If applicable</span></label>
               <input type="url" name="company_url" id="company_url" placeholder="https://yourcompany.com.au" />
@@ -361,7 +414,7 @@
                 <input type="hidden" name="redirect_after_verification" id="redirect-value" value="no" />
               </div>
             </div>
- 
+
             <div>
               <label class="label">Preferred Document Flow</label>
               <div class="radio-row">
@@ -369,15 +422,15 @@
                 <label class="radio-option"><input type="radio" name="doc_flow" value="2-doc" /> <label>2-doc</label></label>
               </div>
             </div>
- 
+
           </div>
         </div>
- 
+
         <!-- ── INTEGRATIONS ── -->
         <div class="mb-8">
           <div class="section-title">Integrations</div>
           <div class="space-y-5">
- 
+
             <div>
               <label class="label">API Integration Required?</label>
               <div class="toggle-group" id="api-toggle">
@@ -389,7 +442,7 @@
                 ℹ️ Client will be routed into the staging environment setup prior to training.
               </div>
             </div>
- 
+
             <div>
               <label class="label">Xero Integration Required?</label>
               <div class="toggle-group" id="xero-toggle">
@@ -398,10 +451,10 @@
               </div>
               <input type="hidden" name="xero_integration" id="xero-value" value="no" />
             </div>
- 
+
           </div>
         </div>
- 
+
         <!-- ── AUTOMATED USER INVITATIONS ── -->
         <div class="mb-8">
           <div class="section-title">Automated User Invitations</div>
@@ -413,16 +466,16 @@
             <label for="auto-invites">Send automated onboarding emails to all listed users upon submission.</label>
           </div>
         </div>
- 
+
         <!-- Hidden structured output field -->
         <input type="hidden" name="_form_output_format" value="cell" />
         <input type="hidden" name="_form_version" value="2.0" />
         <input type="hidden" name="_submitted_at" id="submitted-at" value="" />
- 
+
         <button type="submit" class="submit-btn">Submit Onboarding Form</button>
- 
+
       </form>
- 
+
       <!-- Success state -->
       <div id="success" style="display:none" class="text-center py-6">
         <div class="w-14 h-14 bg-green-50 border border-green-200 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -434,23 +487,23 @@
         <p class="text-gray-600 text-sm leading-relaxed max-w-sm mx-auto">Thanks for completing the form. The VerifiMe team will review your details and be in touch shortly. Listed users will receive their onboarding email invitations automatically.</p>
         <button id="back-btn" type="button" class="mt-5 px-4 py-2 border border-indigo-300 text-indigo-700 rounded-lg hover:bg-indigo-50 transition text-sm">Submit another response</button>
       </div>
- 
+
     </div>
- 
+
     <div class="text-center text-sm text-gray-500 flex items-center justify-center gap-2">
       <svg class="w-4 h-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
       </svg>
       Your details are kept private and used only to administer your VerifiMe account.
     </div>
- 
+
   </div>
- 
+
 <script src="https://s.pageclip.co/v1/pageclip.js" charset="utf-8"></script>
 <script>
   let userCount = 0;
   let complianceOfficerIndex = null;
- 
+
   function addUser(isFirst) {
     userCount++;
     const idx = userCount;
@@ -483,13 +536,13 @@
     `;
     container.appendChild(div);
   }
- 
+
   function removeUser(idx) {
     const row = document.getElementById('user-row-' + idx);
     if (row) row.remove();
     if (complianceOfficerIndex === idx) complianceOfficerIndex = null;
   }
- 
+
   function setComplianceOfficer(idx, checkbox) {
     if (checkbox.checked) {
       // Uncheck any other compliance officer
@@ -502,12 +555,12 @@
       if (complianceOfficerIndex === idx) complianceOfficerIndex = null;
     }
   }
- 
+
   document.getElementById('add-user-btn').addEventListener('click', () => addUser(false));
- 
+
   // Init with one user
   addUser(true);
- 
+
   // Sub-entity toggle
   function toggleSubEntity(val) {
     document.getElementById('sub-entity-value').value = val;
@@ -515,18 +568,18 @@
     document.getElementById('sub-entity-options').style.display = val === 'yes' ? 'block' : 'none';
   }
   toggleSubEntity('no');
- 
+
   // Redirect toggle
   function toggleRedirect(val) {
     document.getElementById('redirect-value').value = val;
     document.querySelectorAll('#redirect-toggle .toggle-btn').forEach(b => b.classList.toggle('active', b.dataset.val === val));
   }
- 
+
   // Show redirect question when URL is entered
   document.getElementById('company_url').addEventListener('input', function() {
     document.getElementById('redirect-question').style.display = this.value.trim() ? 'block' : 'none';
   });
- 
+
   // API toggle
   function toggleApi(val) {
     document.getElementById('api-value').value = val;
@@ -534,28 +587,69 @@
     document.getElementById('api-note').style.display = val === 'yes' ? 'block' : 'none';
   }
   toggleApi('no');
- 
+
   // Xero toggle
   function toggleXero(val) {
     document.getElementById('xero-value').value = val;
     document.querySelectorAll('#xero-toggle .toggle-btn').forEach(b => b.classList.toggle('active', b.dataset.val === val));
   }
   toggleXero('no');
- 
+
   // Logo consent
-  function showLogoConsent() {
-    const fileInput = document.getElementById('logo-upload');
-    document.getElementById('logo-consent').style.display = fileInput.files.length > 0 ? 'flex' : 'none';
+  function showLogoConsent(input) {
+    document.getElementById('logo-consent').style.display = input && input.files.length > 0 ? 'flex' : 'none';
   }
- 
+
+
+  // ── Cloudinary Upload ──
+  const CLOUDINARY_CLOUD = 'dinswc6vx';
+  const CLOUDINARY_PRESET = 'ml_default';
+
+  async function uploadToCloudinary(input, hiddenFieldId, statusId, labelId) {
+    const file = input.files[0];
+    if (!file) return;
+
+    const statusEl = document.getElementById(statusId);
+    const labelEl = document.getElementById(labelId);
+    const hiddenEl = document.getElementById(hiddenFieldId);
+
+    statusEl.className = 'upload-status uploading';
+    statusEl.innerHTML = '<svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path></svg> Uploading...';
+
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', CLOUDINARY_PRESET);
+
+    try {
+      const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/auto/upload`, {
+        method: 'POST',
+        body: formData
+      });
+      const data = await res.json();
+      if (data.secure_url) {
+        hiddenEl.value = data.secure_url;
+        labelEl.textContent = file.name;
+        statusEl.className = 'upload-status done';
+        statusEl.innerHTML = '✅ Uploaded successfully';
+      } else {
+        throw new Error('No URL returned');
+      }
+    } catch (err) {
+      statusEl.className = 'upload-status error';
+      statusEl.innerHTML = '❌ Upload failed — please try again';
+      hiddenEl.value = '';
+      console.error(err);
+    }
+  }
+
   // Pageclip form submission
   window.onload = function () {
     const form = document.getElementById('reg-form');
     const successEl = document.getElementById('success');
     const backBtn = document.getElementById('back-btn');
- 
+
     document.getElementById('submitted-at').value = new Date().toISOString();
- 
+
     Pageclip.form(form, {
       onResponse: function (error, response) {
         if (!error) {
@@ -565,7 +659,7 @@
         return false;
       }
     });
- 
+
     backBtn.addEventListener('click', function () {
       form.reset();
       form.style.display = 'block';
