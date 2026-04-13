@@ -296,7 +296,7 @@
       </div>
     </div>
 
-    <!-- Onboarding Instructions
+    <!-- Onboarding Instructions -->
     <div class="rounded-lg shadow-lg p-7 mb-6 card-animate" style="background: #f1f0ff;">
       <div class="section-title">Before You Begin</div>
       <div class="info-box mb-4">
@@ -315,7 +315,7 @@
         </ol>
         <p class="mt-3 text-sm text-indigo-700 font-medium">⏱ This process typically takes about 5 minutes. Let us know if you have any questions.</p>
       </div>
-    </div> -->
+    </div>
 
     <!-- Main Form -->
     <div class="rounded-lg shadow-lg p-8 mb-6 card-animate" style="background: #f1f0ff;">
@@ -655,10 +655,90 @@
         if (!error) {
           form.style.display = 'none';
           successEl.style.display = 'block';
+          sendOnboardingEmails();
         }
         return false;
       }
     });
+
+  // ── Brevo Email ──
+  const BREVO_API_KEY = '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';
+
+  function getOnboardingEmailHtml(firstName) {
+    return `
+      <div style="font-family:'DM Sans',Arial,sans-serif;max-width:600px;margin:0 auto;color:#111;">
+        <div style="background:#4f46e5;padding:28px 32px;border-radius:10px 10px 0 0;">
+          <h1 style="color:#fff;margin:0;font-size:22px;font-weight:700;">VerifiMe</h1>
+        </div>
+        <div style="background:#f9f8ff;padding:32px;border-radius:0 0 10px 10px;border:1px solid #e0e0f7;">
+          <p style="font-size:16px;margin-top:0;">Hi ${firstName},</p>
+          <p>Thanks for sending the details through. We're setting up your client management portal and need you to step through the process below so we can connect you.</p>
+          <p>To onboard, please follow the steps below and have one of the following required documents handy:</p>
+          <ol style="padding-left:20px;">
+            <li style="margin-bottom:6px;">Front and back of a current Australian driver's licence (or foreign equivalent)</li>
+            <li>Passport</li>
+          </ol>
+          <hr style="border:none;border-top:1px solid #e0e0f7;margin:24px 0;" />
+          <p><strong>Step 1 — Access the portal</strong></p>
+          <p style="margin-top:-8px;">
+            <a href="https://id.verifime.com" style="display:inline-block;background:#4f46e5;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;">VerifiMe Client Portal →</a>
+          </p>
+          <ul style="padding-left:20px;margin-top:12px;">
+            <li>Enter your <strong>work email address</strong> (not personal email).</li>
+            <li>Open the email from VerifiMe and click the <strong>"Verify Email"</strong> button.</li>
+          </ul>
+          <p><strong>Step 2 — Provide identity credentials</strong></p>
+          <ul style="padding-left:20px;margin-top:-8px;">
+            <li>Enter your name, date of birth, and address.</li>
+            <li>Upload one identity document (e.g., driver's licence or passport).</li>
+            <li>Complete a face check to confirm your identity.</li>
+          </ul>
+          <p><strong>Step 3 — Share your verification status &amp; secure your account</strong></p>
+          <ul style="padding-left:20px;margin-top:-8px;">
+            <li>Submit and share your verification status transacting as an individual.</li>
+            <li>Then, as you will be the admin: secure your VerifiMe ID account by adding an <strong>authenticator or passkey</strong>. You must do this final step to allow us to connect you to the management portal.</li>
+          </ul>
+          <hr style="border:none;border-top:1px solid #e0e0f7;margin:24px 0;" />
+          <p style="color:#6b7280;font-size:14px;">This process typically takes about 5 minutes to complete. Let us know if you have any questions.</p>
+          <p style="margin-bottom:0;">Cheers,<br/><strong>The VerifiMe Team</strong></p>
+        </div>
+      </div>
+    `;
+  }
+
+  async function sendOnboardingEmails() {
+    // Collect all users from the form
+    const users = [];
+    for (let i = 1; i <= userCount; i++) {
+      const nameEl  = document.querySelector(`[name="user_name_${i}"]`);
+      const emailEl = document.querySelector(`[name="user_email_${i}"]`);
+      if (nameEl && emailEl && nameEl.value && emailEl.value) {
+        users.push({ name: nameEl.value.trim(), email: emailEl.value.trim() });
+      }
+    }
+
+    for (const user of users) {
+      const firstName = user.name.split(' ')[0];
+      try {
+        await fetch('https://api.brevo.com/v3/smtp/email', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'api-key': BREVO_API_KEY
+          },
+          body: JSON.stringify({
+            sender: { name: 'VerifiMe', email: 'harry.cove@greengatefintech.com' },
+            to: [{ email: user.email, name: user.name }],
+            subject: 'Complete your VerifiMe onboarding',
+            htmlContent: getOnboardingEmailHtml(firstName)
+          })
+        });
+        console.log(`Email sent to ${user.email}`);
+      } catch (err) {
+        console.error(`Failed to send to ${user.email}:`, err);
+      }
+    }
+  }
 
     backBtn.addEventListener('click', function () {
       form.reset();
