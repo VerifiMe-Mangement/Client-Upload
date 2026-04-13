@@ -255,7 +255,7 @@
     .upload-status.done { color: #16a34a; }
     .upload-status.error { color: #dc2626; }
 
-    #sub-entity-options { display: none; }
+    #multi-container-options { display: none; }
 
     .compliance-badge {
       display: inline-flex;
@@ -305,7 +305,7 @@
         <div class="mb-8">
           <div class="section-title">Users + Access</div>
 
-          <p class="hint mb-5">Add all platform admin users below. Mark the <strong>Compliance Officer</strong> using the checkbox — only one user should hold this role. Users marked for <strong>Notifications</strong> will receive system alerts (e.g. verification updates, expiry reminders). The Compliance Officer is responsible for regulatory obligations and may or may not also receive notifications.</p>
+          <p class="hint mb-5">Add all VerifiMe admin users below. Mark the <strong>Compliance Officer</strong> using the checkbox against the relevant name — one compliance officer per business. Also mark all users who need to <strong>receive notifications</strong> about system alerts (e.g. that a customer has completed the verification process).</p>
 
           <div id="users-container"></div>
 
@@ -315,32 +315,32 @@
           </button>
         </div>
 
-        <!-- ── SUB-ENTITIES ── -->
+        <!-- ── MULTIPLE CONTAINERS ── -->
         <div class="mb-8">
-          <div class="section-title">Sub-Entities</div>
-          <p class="hint mb-4">A sub-entity is a separate version of the VerifiMe platform with its own configuration — useful if your business has multiple product offerings or functions (e.g. lending, recruitment, property management) that require different verification flows or settings.</p>
+          <div class="section-title">Multiple Containers</div>
+          <p class="hint mb-4">If you require more than one management portal configured for your business due to different verification flows or program rules, please indicate below. (For example, some businesses require a "customer container" and a "personnel container".)</p>
 
-          <label class="label">Does your organisation require sub-entities?</label>
-          <div class="toggle-group mb-4" id="sub-entity-toggle">
-            <button type="button" class="toggle-btn" data-val="no" onclick="toggleSubEntity('no')">No</button>
-            <button type="button" class="toggle-btn" data-val="yes" onclick="toggleSubEntity('yes')">Yes</button>
+          <label class="label">Does your organisation require multiple containers?</label>
+          <div class="toggle-group mb-4" id="multi-container-toggle">
+            <button type="button" class="toggle-btn" data-val="no" onclick="toggleMultiContainer('no')">No</button>
+            <button type="button" class="toggle-btn" data-val="yes" onclick="toggleMultiContainer('yes')">Yes</button>
           </div>
-          <input type="hidden" name="sub_entities_required" id="sub-entity-value" value="no" />
+          <input type="hidden" name="multi_containers_required" id="multi-container-value" value="no" />
 
-          <div id="sub-entity-options" class="space-y-3">
-            <label class="label">Sub-entity names / purposes</label>
-            <p class="hint mb-2">Select all that apply, or describe your own below.</p>
-            <div class="grid grid-cols-2 gap-2">
-              <div class="checkbox-row"><input type="checkbox" name="sub_entity_type[]" value="Lending" id="se-lending"><label for="se-lending">Lending</label></div>
-              <div class="checkbox-row"><input type="checkbox" name="sub_entity_type[]" value="Recruitment" id="se-recruitment"><label for="se-recruitment">Recruitment</label></div>
-              <div class="checkbox-row"><input type="checkbox" name="sub_entity_type[]" value="Property Management" id="se-property"><label for="se-property">Property Management</label></div>
-              <div class="checkbox-row"><input type="checkbox" name="sub_entity_type[]" value="Insurance" id="se-insurance"><label for="se-insurance">Insurance</label></div>
-              <div class="checkbox-row"><input type="checkbox" name="sub_entity_type[]" value="Conveyancing" id="se-conveyancing"><label for="se-conveyancing">Conveyancing</label></div>
-              <div class="checkbox-row"><input type="checkbox" name="sub_entity_type[]" value="Other" id="se-other"><label for="se-other">Other</label></div>
+          <div id="multi-container-options" class="space-y-4">
+            <div id="single-container-name" style="display:none;">
+              <label class="label">Container Name</label>
+              <p class="hint mb-2">Please provide the name of your single container (e.g. Davidson Accounting – Clients).</p>
+              <input type="text" name="single_container_name" placeholder="e.g. Davidson Accounting – Clients" />
             </div>
-            <div class="mt-3">
-              <label class="label">Additional sub-entity details</label>
-              <textarea name="sub_entity_notes" rows="2" placeholder="Describe any additional sub-entities or configurations..." style="width:100%;padding:10px 12px;background:#f9fafb;border:2px solid #e5e7eb;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:15px;color:#1F2937;outline:none;resize:vertical;"></textarea>
+            <div id="multiple-container-names" style="display:none;">
+              <label class="label">Container Names</label>
+              <p class="hint mb-3">Please provide the name details of each container separately (e.g. Davidson Accounting – Clients, Davidson Accounting – Personnel).</p>
+              <div id="containers-list"></div>
+              <button type="button" id="add-container-btn" class="mt-2 flex items-center gap-2 text-indigo-600 font-semibold text-sm hover:text-indigo-800 transition">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
+                Add Another Container
+              </button>
             </div>
           </div>
         </div>
@@ -349,8 +349,8 @@
         <div class="mb-8">
           <div class="section-title">Compliance Documentation</div>
           <div>
-            <label class="label">AML/CTF Program <span class="badge">If not yet received</span></label>
-            <p class="hint mb-2">Upload your AML/CTF Program document if it hasn't already been provided to the VerifiMe team.</p>
+            <label class="label">AML Program <span class="badge">If available</span></label>
+            <p class="hint mb-2">Upload your AML program if it is available.</p>
             <div class="file-upload-area">
               <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
               <span id="aml-upload-label">Click to upload PDF or Word document</span>
@@ -361,9 +361,9 @@
           </div>
         </div>
 
-        <!-- ── BRANDING + CONFIGURATION ── -->
+        <!-- ── BRANDING ── -->
         <div class="mb-8">
-          <div class="section-title">Branding + Configuration</div>
+          <div class="section-title">Branding</div>
           <div class="space-y-5">
 
             <div>
@@ -394,14 +394,19 @@
               </div>
             </div>
 
-            <div>
-              <label class="label">Preferred Document Flow</label>
-              <div class="radio-row">
-                <label class="radio-option"><input type="radio" name="doc_flow" value="1-doc" /> <label>1-doc</label></label>
-                <label class="radio-option"><input type="radio" name="doc_flow" value="2-doc" /> <label>2-doc</label></label>
-              </div>
-            </div>
+          </div>
+        </div>
 
+        <!-- ── DOCUMENT FLOW CONFIGURATION ── -->
+        <div class="mb-8">
+          <div class="section-title">Document Flow Configuration</div>
+          <div>
+            <label class="label">Preferred Document Flow</label>
+            <p class="hint mb-3">Please confirm whether you want to set up a <strong>1 document ID flow</strong> (e.g. passport or driver's licence) or a <strong>2 document ID flow</strong> (e.g. both passport and driver's licence, or driver's licence and Medicare card).</p>
+            <div class="radio-row">
+              <label class="radio-option"><input type="radio" name="doc_flow" value="1-doc" /> <label>1-doc flow</label></label>
+              <label class="radio-option"><input type="radio" name="doc_flow" value="2-doc" /> <label>2-doc flow</label></label>
+            </div>
           </div>
         </div>
 
@@ -537,12 +542,47 @@
   document.getElementById('add-user-btn').addEventListener('click', () => addUser(false));
   addUser(true);
 
-  function toggleSubEntity(val) {
-    document.getElementById('sub-entity-value').value = val;
-    document.querySelectorAll('#sub-entity-toggle .toggle-btn').forEach(b => b.classList.toggle('active', b.dataset.val === val));
-    document.getElementById('sub-entity-options').style.display = val === 'yes' ? 'block' : 'none';
+  let containerCount = 0;
+
+  function addContainer() {
+    containerCount++;
+    const idx = containerCount;
+    const list = document.getElementById('containers-list');
+    const div = document.createElement('div');
+    div.id = 'container-row-' + idx;
+    div.style.cssText = 'display:flex;gap:8px;align-items:center;margin-bottom:8px;';
+    div.innerHTML = `
+      <input type="text" name="container_name_${idx}" placeholder="e.g. Davidson Accounting – Clients" style="flex:1;" />
+      ${containerCount > 1 ? `<button type="button" onclick="removeContainer(${idx})" style="background:none;border:none;color:#9ca3af;font-size:1.1rem;cursor:pointer;padding:2px 8px;border-radius:4px;transition:color 0.15s,background 0.15s;" onmouseover="this.style.color='#ef4444';this.style.background='#fef2f2'" onmouseout="this.style.color='#9ca3af';this.style.background='none'" title="Remove">✕</button>` : ''}
+    `;
+    list.appendChild(div);
   }
-  toggleSubEntity('no');
+
+  function removeContainer(idx) {
+    const row = document.getElementById('container-row-' + idx);
+    if (row) row.remove();
+  }
+
+  function toggleMultiContainer(val) {
+    document.getElementById('multi-container-value').value = val;
+    document.querySelectorAll('#multi-container-toggle .toggle-btn').forEach(b => b.classList.toggle('active', b.dataset.val === val));
+    const optionsEl = document.getElementById('multi-container-options');
+    const singleEl = document.getElementById('single-container-name');
+    const multipleEl = document.getElementById('multiple-container-names');
+    if (val === 'no') {
+      optionsEl.style.display = 'block';
+      singleEl.style.display = 'block';
+      multipleEl.style.display = 'none';
+    } else {
+      optionsEl.style.display = 'block';
+      singleEl.style.display = 'none';
+      multipleEl.style.display = 'block';
+      if (containerCount === 0) { addContainer(); addContainer(); }
+    }
+  }
+  toggleMultiContainer('no');
+
+  document.getElementById('add-container-btn').addEventListener('click', addContainer);
 
   function toggleRedirect(val) {
     document.getElementById('redirect-value').value = val;
@@ -629,7 +669,7 @@
       form.reset();
       form.style.display = 'block';
       successEl.style.display = 'none';
-      toggleSubEntity('no');
+      toggleMultiContainer('no');
       toggleApi('no');
       toggleXero('no');
     });
