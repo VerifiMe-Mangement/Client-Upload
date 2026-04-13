@@ -67,7 +67,7 @@ exports.handler = async function (event) {
         'Authorization': `Bearer ${RESEND_API_KEY}`
       },
       body: JSON.stringify({
-        from: 'VerifiMe <harry.cove@greengatefintech.com>',
+        from: 'VerifiMe <onboarding@resend.dev>',
         to: [to],
         subject: 'Complete your VerifiMe onboarding',
         html
