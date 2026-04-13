@@ -662,7 +662,7 @@
     });
 
   // ── Brevo Email ──
-  const BREVO_API_KEY = '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';
+  const RESEND_API_KEY = 're_6nXqq18v_MEr9MJAoP7PuPsv5UST77pqQ';
 
   function getOnboardingEmailHtml(firstName) {
     return `
@@ -720,17 +720,17 @@
     for (const user of users) {
       const firstName = user.name.split(' ')[0];
       try {
-        await fetch('https://api.brevo.com/v3/smtp/email', {
+        await fetch('https://api.resend.com/emails', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'api-key': BREVO_API_KEY
+            'Authorization': `Bearer ${RESEND_API_KEY}`
           },
           body: JSON.stringify({
-            sender: { name: 'VerifiMe', email: 'harry.cove@greengatefintech.com' },
-            to: [{ email: user.email, name: user.name }],
+            from: 'VerifiMe <harry.cove@greengatefintech.com>',
+            to: [user.email],
             subject: 'Complete your VerifiMe onboarding',
-            htmlContent: getOnboardingEmailHtml(firstName)
+            html: getOnboardingEmailHtml(firstName)
           })
         });
         console.log(`Email sent to ${user.email}`);
