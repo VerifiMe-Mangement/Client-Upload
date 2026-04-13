@@ -545,7 +545,6 @@
 
   function setComplianceOfficer(idx, checkbox) {
     if (checkbox.checked) {
-      // Uncheck any other compliance officer
       if (complianceOfficerIndex && complianceOfficerIndex !== idx) {
         const prev = document.getElementById('co-' + complianceOfficerIndex);
         if (prev) prev.checked = false;
@@ -557,11 +556,8 @@
   }
 
   document.getElementById('add-user-btn').addEventListener('click', () => addUser(false));
-
-  // Init with one user
   addUser(true);
 
-  // Sub-entity toggle
   function toggleSubEntity(val) {
     document.getElementById('sub-entity-value').value = val;
     document.querySelectorAll('#sub-entity-toggle .toggle-btn').forEach(b => b.classList.toggle('active', b.dataset.val === val));
@@ -569,18 +565,15 @@
   }
   toggleSubEntity('no');
 
-  // Redirect toggle
   function toggleRedirect(val) {
     document.getElementById('redirect-value').value = val;
     document.querySelectorAll('#redirect-toggle .toggle-btn').forEach(b => b.classList.toggle('active', b.dataset.val === val));
   }
 
-  // Show redirect question when URL is entered
   document.getElementById('company_url').addEventListener('input', function() {
     document.getElementById('redirect-question').style.display = this.value.trim() ? 'block' : 'none';
   });
 
-  // API toggle
   function toggleApi(val) {
     document.getElementById('api-value').value = val;
     document.querySelectorAll('#api-toggle .toggle-btn').forEach(b => b.classList.toggle('active', b.dataset.val === val));
@@ -588,38 +581,31 @@
   }
   toggleApi('no');
 
-  // Xero toggle
   function toggleXero(val) {
     document.getElementById('xero-value').value = val;
     document.querySelectorAll('#xero-toggle .toggle-btn').forEach(b => b.classList.toggle('active', b.dataset.val === val));
   }
   toggleXero('no');
 
-  // Logo consent
   function showLogoConsent(input) {
     document.getElementById('logo-consent').style.display = input && input.files.length > 0 ? 'flex' : 'none';
   }
 
-
-  // ── Cloudinary Upload ──
+  // Cloudinary Upload
   const CLOUDINARY_CLOUD = 'daiplvxhb';
   const CLOUDINARY_PRESET = 'verifime_uploads';
 
   async function uploadToCloudinary(input, hiddenFieldId, statusId, labelId) {
     const file = input.files[0];
     if (!file) return;
-
     const statusEl = document.getElementById(statusId);
     const labelEl = document.getElementById(labelId);
     const hiddenEl = document.getElementById(hiddenFieldId);
-
     statusEl.className = 'upload-status uploading';
     statusEl.innerHTML = '<svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path></svg> Uploading...';
-
     const formData = new FormData();
     formData.append('file', file);
     formData.append('upload_preset', CLOUDINARY_PRESET);
-
     try {
       const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/auto/upload`, {
         method: 'POST',
@@ -642,7 +628,7 @@
     }
   }
 
-  // Pageclip form submission
+  // Pageclip
   window.onload = function () {
     const form = document.getElementById('reg-form');
     const successEl = document.getElementById('success');
@@ -655,41 +641,10 @@
         if (!error) {
           form.style.display = 'none';
           successEl.style.display = 'block';
-          sendOnboardingEmails();
         }
         return false;
       }
     });
-
-  // ── Brevo Email ──
-  async function sendOnboardingEmails() {
-    const users = [];
-    for (let i = 1; i <= userCount; i++) {
-      const nameEl  = document.querySelector(`[name="user_name_${i}"]`);
-      const emailEl = document.querySelector(`[name="user_email_${i}"]`);
-      if (nameEl && emailEl && nameEl.value && emailEl.value) {
-        users.push({ name: nameEl.value.trim(), email: emailEl.value.trim() });
-      }
-    }
-
-    for (const user of users) {
-      try {
-        const res = await fetch('/.netlify/functions/send', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ to: user.email, name: user.name })
-        });
-        const data = await res.json();
-        if (data.success) {
-          console.log(`Email sent to ${user.email}`);
-        } else {
-          console.error(`Failed to send to ${user.email}:`, data.error);
-        }
-      } catch (err) {
-        console.error(`Failed to send to ${user.email}:`, err);
-      }
-    }
-  }
 
     backBtn.addEventListener('click', function () {
       form.reset();
